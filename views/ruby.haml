@@ -1,0 +1,68 @@
+%p This webservice lets you store JSON objects on the internet and access them through HTTP requests.
+%p It comes with a ruby wrapper.
+%p
+  Install
+  %b north_pole_wrapper
+  via the gem command and start a pry/irb session
+%pre.code.shell
+  gem install north_pole_wrapper
+  pry
+%p Require the wrapper and include it so we don't have to namespace it
+%pre.code.ruby
+  require 'north_pole_wrapper'
+  include NorthPoleWrapper
+%p
+  You now have access to User and Storage. To use any of these resources you need to set the
+  %b api_key
+  and
+  %b secret
+  params. For this demo we will use the guest account.
+%pre.code.ruby
+  API_KEY = 'guest@northpole.ro'
+  SECRET  = 'guest'
+%p Both resources take a hash param in the constructor. Make sure you include api_key and secret here as well. Lets say we want to find some info about the user.
+%pre.code.ruby
+  User.find('api_key' => API_KEY, 'secret' => SECRET)
+%p The Storage model what helps you store data. It is connected to the User model through the API_KEY. Storage's methods make http requests to http://northpole.ro/storage with 'Content-Type': 'application/json' set.
+%table.table.table-bordered
+  %thead
+    %tr
+      %th Storage Method
+      %th HTTP Verb
+      %th Params
+      %th Description 
+  %tbody
+    %tr
+      %td find
+      %td GET
+      %td api_key, secret
+      %td finding resources
+    %tr
+      %td create
+      %td POST
+      %td api_key, secret
+      %td storing new resources
+    %tr
+      %td update
+      %td PUT
+      %td api_key, secret, _id
+      %td updating json resources
+    %tr
+      %td destroy
+      %td DELETE
+      %td api_key, secret, _id
+      %td deleting resources
+%p For example, lets create a resource that resembles a shopping list. The result is a JSON object with the _id of the resource.
+%pre.code.ruby
+  resource = Storage.create('api_key' => API_KEY, 'secret' => SECRET, 'shopping_list' => ['milk', 'eggs', 'bacon'])
+  id = resource['_id']
+%p You forgot to get bread. Let's just update it.
+%pre.code.ruby
+  Storage.update('api_key' => API_KEY, 'secret' => SECRET, '_id' => id, 'shopping_list' => ['milk', 'eggs', 'bacon', 'bread'])
+%p You can find any resources by their attributes, including _id
+%pre.code.ruby
+  Storage.find('api_key' => API_KEY, 'secret' => SECRET, '_id' => id)
+%p And now you decided to eat out. You don't want to waste space so..
+%pre.code.ruby
+  Storage.delete('api_key' => API_KEY, 'secret' => SECRET, '_id' => id)
+%p Have fun with your JSON cloud storage.

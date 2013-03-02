@@ -1,0 +1,10 @@
+*.css
+*.js
+Gemfile.lock
+
+tmp/*
+log/*
+
+*.swp
+*.swo
+*~

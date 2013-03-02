@@ -1,0 +1,121 @@
+$sky-dark: #a1caf6
+$sky-light: #bfe1fa
+$snow: #e4f2fd
+$ground: #6e8b8f
+$under-ground: #45645e
+
+//  cursor: pointer
+//  cursor: hand
+
+html, body
+  height: 100%
+  color: $under-ground
+
+.language:hover
+  text-decoration: none
+
+.wrapper
+  min-height: 100%
+  background: url('/public/images/bg.png') top center repeat-x
+  position: relative
+
+.container-fluid
+  padding-left: 150px
+  padding-right: 150px
+
+.bear
+  position: relative
+  top: -150px
+
+.flipit
+  -moz-transform: scaleX(-1)
+  -o-transform: scaleX(-1)
+  -webkit-transform: scaleX(-1)
+  transform: scaleX(-1)
+  filter: FlipH
+  -ms-filter: "FlipH"
+
+.italic
+  font-style: italic
+
+legend
+  color: $under-ground
+
+.web-content
+  padding-bottom: 154px
+  padding-top: 40px
+
+.bear-content
+  text-align: center
+
+.ruby:hover
+  background-image: url('/public/images/ruby_small.png')
+
+.java:hover
+  background-image: url('/public/images/java_small.png')
+
+.shell:hover
+  background-image: url('/public/images/shell_small.png')
+
+.json:hover
+  background-image: url('/public/images/json_small.png')
+
+pre.code, .badge, .label
+  border-radius: 0px
+  -mox-border-radius: 0px
+  -webkit-border-radius: 0px
+
+input[type=text]
+  border-radius: 0px
+  -moz-border-radius: 0px
+  -webkit-border-radius: 0px
+  &:focus
+    box-shadow: 0px 0px 0px 0px rgba(0,0,0,0)
+    -moz-box-shadow: 0px 0px 0px 0px rgba(0,0,0,0)
+    -webkit-box-shadow: 0px 0px 0px 0px rgba(0,0,0,0)
+
+    transition: 0px 0px 0px 0px
+    -moz-transition: 0px 0px 0px 0px
+    -webkit-box-transition: 0px 0px 0px 0px
+
+pre.code
+  background-repeat: no-repeat
+  background-position: right top
+
+#header
+  padding-top: 130px
+  height: 200px
+  div
+    text-align: center
+    width: 100%
+    background-color: $ground
+    padding: 5px
+  a
+    color: $snow
+  p
+    color: $snow
+    font-weight: bold
+  a:hover
+    text-decoration: none
+
+#footer
+  position: absolute
+  bottom: 0px
+  left: 0px
+  background-color: $ground
+  background-image: url(/public/images/footer.png)
+  div
+    div
+      text-align: center
+  dl
+    position: relative
+  dd
+    padding-top: 3px
+  dd, p, h3, a, div
+    color: $snow
+  .span8
+    padding-left: 90px
+
+@media (max-width: 767px)
+  #footer
+    display: none

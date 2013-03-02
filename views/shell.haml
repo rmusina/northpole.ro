@@ -1,0 +1,101 @@
+%p
+  This webservice lets you store JSON objects on the internet and access them through HTTP requests. The base URL for the requests is
+  %b http://northpole.ro/
+%p The routing table for the API:
+%table.table.table-bordered
+  %thead
+    %tr
+      %th Resource
+      %th HTTP Verb
+      %th Content-Type
+      %th Required Params
+      %th{'style' => 'width: 50%'} Description
+  %tbody
+    %tr
+      %td /user
+      %td GET
+      %td application/json
+      %td api_key, secret
+      %td finding a user and any info related to the user
+    %tr
+      %td /user
+      %td POST
+      %td application/json
+      %td api_key, secret
+      %td create a new user. api_key needs to be a valid email address, as the secret will be mailed to you
+    %tr
+      %td /storage
+      %td GET
+      %td application/json
+      %td api_key, secret
+      %td finding something stored
+    %tr
+      %td /storage
+      %td POST
+      %td application/json
+      %td api_key, secret
+      %td store a new JSON object.
+    %tr
+      %td /storage
+      %td PUT
+      %td application/json
+      %td api_key, secret, _id
+      %td updating json storage. The JSON object with _id is updated with any extra params found in the body of the request
+    %tr
+      %td /storage
+      %td DELETE
+      %td application/json
+      %td api_key, secret, _id
+      %td deletes storage with _id
+%p
+  In this example, we will use curl to make the requests from bash, but you can use any http client. All requests require the content type set to json. Example:
+  %b 'Content-Type: application/json'
+  \. All the parameters need to be encoded as a valid JSON string and placed in the body of the request. For this demo, we will use
+  %b guest@northpole.ro
+  as the api_key and
+  %b guest
+  as the secret. You probably want to register your own, as you don't want other people updating your storage.
+%p Mkay. So lets say you want to store a shopping list and the json object you want to send is below. You don't have to namespace it, but it will make querying easier later when you want to find all your shopping lists.
+%pre.code.json
+  = preserve do
+    :escaped
+      {
+        "api_key": "guest@northpole.ro"
+        "secret": "secret"
+        "namespace": "shopping_list"
+        "storage": ["milk", "eggs", "bacon"]
+      }
+%pre.code.shell
+  curl <b>-X POST</b> -H 'Content-Type: application/json' <b>-d '{"api_key":"guest@northpole.ro","secret":"secret","namespace":"shopping_list","storage":["milk","eggs","bacon"]}'</b> 'http://northpole.ro/storage'
+%ul
+  %li
+    \-X sets the HTTP verb (GET, POST, PUT, DELETE)
+  %li
+    \-H sets the content type header
+  %li
+    \-d sets the data in the body of the request (it should be a valid json string)
+%p As a result, you will get a json string containing the _id of the new storage.
+%pre.code.shell
+  = preserve do
+    :escaped
+      {
+        "_id": "YOUR_ID"
+      }
+%p You can use that _id to get the storage
+%pre.code.shell
+  curl <b>-X GET</b> -H 'Content-Type: application/json' <b>-d '{"api_key":"guest@northpole.ro","secret":"secret","_id":"YOUR_ID"}'</b> 'http://northpole.ro/storage'
+%p or you could use the namespace you set to get all the storage within that namespace
+%pre.code.shell
+  curl <b>-X GET</b> -H 'Content-Type: application/json' <b>-d '{"api_key":"guest@northpole.ro","secret":"secret","namespace":"shopping_list"}'</b> 'http://northpole.ro/storage'
+%p Both of them return an array of json objects (even if it contains just one object)
+%pre.code.json
+  = preserve do
+    :escaped
+      [
+        {
+          "api_key": "guest@northpole.ro",
+          "namespace": "shopping_list",
+          "storage": ["milk", "eggs", "bacon"]
+        }
+      ]
+%p Have fun with your JSON cloud storage.

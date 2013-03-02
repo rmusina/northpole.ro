@@ -1,0 +1,78 @@
+%p This webservice lets you store JSON objects on the internet and access them through HTTP requests.
+%p
+  It comes with a
+  %a{:href => '/public/JNorthPole.jar'} java wrapper
+%p
+  The jar depends on
+  %a{:href => 'https://code.google.com/p/google-gson/downloads/list'} GSON
+  and
+  %a{:href => 'http://hc.apache.org/downloads.cgi'} ApacheHttpClient
+  , so make sure you add them to the build path as well.
+%p
+  Also, I <b>strongly</b> recommend you read
+  %a{:href => '/shell'} the http
+  doc. It will help you understand what is happening in the back-end.
+%p Let's just start with this:
+%pre.code.java
+  = preserve do
+    :escaped
+      public class App {
+        public static void main(String[] args) {
+          // code goes here
+        }
+      }
+%p Once JNorthPole, GSON and ApacheHttpClient are loaded in the build path, you have access to User and Storage model. The webservice uses JSON to communicate, so you need GSON to encode objects as json.
+%p
+  All requests require the <b>api_key</b> and <b>secret</b> params set. In this example we will use 'guest@northpole.ro' and 'secret'. You probably want to
+  %a{:href => '/'} get your own.
+%pre.code.java
+  = preserve do
+    :escaped
+      JsonObject params = new JsonObject();
+      params.addProperty("api_key", "guest@northpole.ro");
+      params.addProperty("secret", "secret");
+%p Let's say we want to store a shopping list.
+%pre.code.java
+  = preserve do
+    :escaped
+      params.addProperty("namespace", "shopping_list");
+
+      JsonArray items = new JsonArray();
+      items.add(new JsonPrimitive("milk"));
+      items.add(new JsonPrimitive("eggs"));
+      items.add(new JsonPrimitive("bacon"));
+
+      params.add("storage", items);
+%p
+  Okay. We are now happy with the contents of the resource, we can create it.
+%pre.code.java
+  = preserve do
+    :escaped
+      Storage storage = new Storage(params);
+      JsonElement result = storage.create();
+%p The result is a json object containing the <b>_id</b> of the storage. To query an object we can use the _id
+%pre.code.java
+  = preserve do
+    :escaped
+      String id = result.getAsJsonObject().get("_id").getAsString();
+
+      JsonObject find_params = new JsonObject();
+      find_params.addProperty("api_key", "guest@northpole.ro");
+      find_params.addProperty("secret", "secret");
+      find_params.addProperty("_id", id);
+
+      JsonElement result = new Storage(find_params).find();
+      JsonArray jsonArray = result.getAsJsonArray();
+%p The result is a json array, even if it has just one element.
+%p You can also query by a property. To get all the shopping lists you have created (with the help of the namespace):
+%pre.code.java
+  = preserve do
+    :escaped
+      JsonObject find_params = new JsonObject();
+      find_params.addProperty("api_key", "guest@northpole.ro");
+      find_params.addProperty("secret", "secret");
+      find_params.addProperty("namespace", "shopping_list");
+
+      JsonElement result = new Storage(find_params).find();
+%p You also have <b>update()</b> and <b>destroy()</b> methods. They require <b>_id</b> param to be set.
+%p Have fun with your JSON cloud storage.

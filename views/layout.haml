@@ -1,0 +1,59 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
+    %meta{:charset => "utf-8"}
+    %title North Pole
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
+    %meta{:content => "", :name => "description"}
+    %meta{:content => "", :name => "author"}
+    %meta{:name =>"google-site-verification", :content => "pJtS6KlFSkVYY_aAq9aqeUZ_yI-z0WqYD5hixqYGej0"}
+    %link{:rel => "shortcut icon", :href => "/public/favicon.ico"}
+
+    = css "/public/stylesheets/bootstrap.css"
+    = css "/public/stylesheets/bootstrap-responsive.css"
+    = css "/public/stylesheets/application.css"
+
+  %body{:style => "zoom: 1;"}
+    .wrapper
+      .container-fluid
+        .row-fluid
+          .span8#header
+            %div
+              %h1
+                %a{:href => '/'} {"json": ["cloud", "storage"]}
+            %p.pull-right by northpole.ro
+        .row-fluid
+          .span8.web-content
+            = yield
+          .span4.bear-content
+            %a{:href => '/'}
+              %img.bear{:src => '/public/images/bear.png', :alt => 'bear'}
+        .row-fluid#footer
+          .span8
+            .span4
+              %h3 contact
+              %dl
+                %dd
+                  %a{:href => 'mailto:foo@bar.com'} foo@bar.com
+                %dd
+                  %a{:href => 'http://github.com/mess110/northpole.ro/wiki'} github wiki
+                %dd
+                  %a{:href => 'http://github.com/mess110/northpole.ro/issues'} issue tracker
+            .span3
+              %h3 links
+              %dl
+                %dd
+                  %a{:href => '/shell'} shell
+                %dd
+                  %a{:href => '/ruby'} ruby
+                %dd
+                  %a{:href => '/java'} java
+            .span4
+              %h3 last tweet
+              %dl.italic
+                %dd Thau shall registar a Twitter account and connect it here. Do not pass the 130 character limit
+
+    = js "/public/javascripts/jquery.js"
+    = js "/public/javascripts/application.js"
+    = js "/public/javascripts/analytics.js"
